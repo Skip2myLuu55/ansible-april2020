@@ -1,2 +1,2 @@
-# ansible-april2020
-Ansible-April 2020 buckets
+# ansible-class-april-2020
+This repo is used for April Batch Ansible Class

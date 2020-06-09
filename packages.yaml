@@ -1,18 +1,16 @@
 ---
-- name: User Playbook
+- name: Installs packages
   become: yes
   become_method: sudo
   user: centos
   hosts: all
-  tasks: 
-  - name: Add Users
-    user:
+  tasks:
+  - name: Installs packages loop
+    package:
       name: "{{item}}"
       state: present
     with_items:
-    - bob
-    - lisa
-    - sam
-    - tiffany
-    - kelly
-    - meg
+    - telnet
+    - gzip
+    - lftp
+    - httpd

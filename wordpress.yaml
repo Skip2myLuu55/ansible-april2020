@@ -13,7 +13,7 @@
     shell: "yum-config-manager --enable remi-php73"
   - name: Install httpd
     package: 
-        name: "{{ item }}"
+        name: "{{item}}"
         state: latest
     with_items:
         - httpd

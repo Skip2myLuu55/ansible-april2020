@@ -1,0 +1,42 @@
+---
+- name: Installs packages
+  hosts: all
+  become: yes
+  become_method: sudo
+  user: centos
+  tasks:
+  - name: Install remi repo
+    yum:
+        name: http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm
+        state: present
+  - name: enable remi-php72
+    shell: "yum-config-manager --enable remi-php73"
+  - name: Install httpd
+    package: 
+        name: "{{ item }}"
+        state: latest
+    with_items:
+        - httpd
+        - php
+        - mariadb-server
+        - php-mysql
+        - php-gd 
+    ignore_errors: yes           
+  - name: Download wordpress
+    get_url:
+        url: https://wordpress.org/latest.tar.gz 
+        dest: /tmp/latest.tar.gz
+  - name: Unzip wordpress
+    unarchive: 
+        src: /tmp/latest.tar.gz
+        dest: /var/www/html/
+        remote_src: yes 
+  - name: Move files
+    shell: "mv /var/www/html/wordpress/*  /var/www/html/"
+    ignore_errors: yes 
+  - name: run apache 
+    systemd: 
+      name: httpd 
+      state: restarted 
+      enabled: yes 
+    ignore_errors: yes
